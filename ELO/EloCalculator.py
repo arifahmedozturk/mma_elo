@@ -1,11 +1,13 @@
 import json
 from ELO.EloHelper import EloHelper
+from ELO.StatsHelper import StatsHelper
 from DB.Fight import Fight
 from DB.Fighter import Fighter
 
 class EloCalculator:
     def __init__(self):
         self.helper = EloHelper()
+        self.stats_helper = StatsHelper()
         self.FightDB = Fight()
         self.FighterDB = Fighter()
     
@@ -31,7 +33,7 @@ class EloCalculator:
         for x in range(10000):
             last_date = self.load_last_date()
             closest_date = self.FightDB.get_closest_date_to_date(last_date)
-            if closest_date is None:
+            if closest_date is None or closest_date == "Incomplete":
                 break
             self.save_last_date(closest_date)
 
@@ -42,11 +44,15 @@ class EloCalculator:
                 if 'UFC' not in fight['event'] and 'The Ultimate Fighter' not in fight['event']:
                     print("Not UFC fight, skipping...")
                     continue
+
                 fighter = self.FighterDB.get_fighter(fight['fighter'])
                 opponent = self.FighterDB.get_fighter(fight['opponent'])
+                
+                self.stats_helper.log_fight(fighter, opponent, fight)
 
                 fighter_delta_elo, opponent_delta_elo = self.helper.get_elo_changes(fighter, opponent, fight)
                 self.FighterDB.set_fighter_elo(fighter['name'], fighter['elo'] + fighter_delta_elo)
                 self.FighterDB.set_fighter_last_age_penalty(fighter['name'], fight['date'])
                 self.FighterDB.set_fighter_elo(opponent['name'], opponent['elo'] + opponent_delta_elo)
                 self.FighterDB.set_fighter_last_age_penalty(opponent['name'], fight['date'])
+            self.stats_helper.pretty_print()
