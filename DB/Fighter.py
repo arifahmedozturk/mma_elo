@@ -4,7 +4,7 @@ class Fighter(PSQLClient):
     def add_fighter(self, fighter_name, dob):
         psql_script = "INSERT INTO fighters(fighter_name, elo) VALUES ('" + fighter_name.replace("'", "''") + "'," + str(self.config.STARTING_ELO) + ")"
         if dob is not None:
-            psql_script = "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES ('" + fighter_name.replace("'", "''") + "', " + str(self.config.STARTING_ELO) + ", '" + dob + "', '" + dob + "')"
+            psql_script = "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES ('" + fighter_name.replace("'", "''") + "', " + str(self.config.STARTING_ELO) + ", '" + dob + "', '" + self.date_helper.add_years_to_date(dob, self.config.MIN_AGE_FOR_PENALTY) + "')"
         self.cursor.execute(psql_script)
         self.connection.commit()
     
@@ -35,10 +35,26 @@ class Fighter(PSQLClient):
                 'last_age_penalty': fighters[i][3]
             })
         return fighter_dicts
+    
+    def reset_fighters_elo(self):
+        fighters = self.get_fighters()
+        for fighter in fighters:
+            if fighter['dob'] is None:
+                continue
+            self.cursor.execute("UPDATE fighters SET elo=" + str(self.config.STARTING_ELO) + " WHERE fighter_name='" + fighter['name'].replace("'", "''") + "';")
+            self.connection.commit()
 
     def set_fighter_elo(self, fighter_name, elo):
         self.cursor.execute("UPDATE fighters SET elo=" + str(elo) + " WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
         self.connection.commit() 
+    
+    def reset_fighters_last_age_penalty(self):
+        fighters = self.get_fighters()
+        for fighter in fighters:
+            if fighter['dob'] is None:
+                continue
+            self.cursor.execute("UPDATE fighters SET last_age_penalty='" + self.date_helper.add_years_to_date(fighter['dob'], self.config.MIN_AGE_FOR_PENALTY) + "' WHERE fighter_name='" + fighter['name'].replace("'", "''") + "';")
+            self.connection.commit()
 
     def set_fighter_last_age_penalty(self, fighter_name, last_age_penalty):
         self.cursor.execute("UPDATE fighters SET last_age_penalty='" + last_age_penalty + "' WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")

@@ -42,17 +42,17 @@ class EloCalculator:
             print("Found", len(fights), "fights")
             for fight in fights:
                 if 'UFC' not in fight['event'] and 'The Ultimate Fighter' not in fight['event']:
+                    print("For", fight['fighter'], 'VS.', fight['opponent'], 'at', fight['event'])
                     print("Not UFC fight, skipping...")
                     continue
 
                 fighter = self.FighterDB.get_fighter(fight['fighter'])
                 opponent = self.FighterDB.get_fighter(fight['opponent'])
-                
+
                 self.stats_helper.log_fight(fighter, opponent, fight)
 
                 fighter_delta_elo, opponent_delta_elo = self.helper.get_elo_changes(fighter, opponent, fight)
+
                 self.FighterDB.set_fighter_elo(fighter['name'], fighter['elo'] + fighter_delta_elo)
-                self.FighterDB.set_fighter_last_age_penalty(fighter['name'], fight['date'])
                 self.FighterDB.set_fighter_elo(opponent['name'], opponent['elo'] + opponent_delta_elo)
-                self.FighterDB.set_fighter_last_age_penalty(opponent['name'], fight['date'])
             self.stats_helper.pretty_print()
