@@ -2,9 +2,9 @@ from DB.PSQLClient import PSQLClient
 
 class Fighter(PSQLClient):
     def add_fighter(self, fighter_name, dob):
-        psql_script = "INSERT INTO fighters(fighter_name, elo) VALUES ('" + fighter_name.replace("'", "''") + "', 1200)"
+        psql_script = "INSERT INTO fighters(fighter_name, elo) VALUES ('" + fighter_name.replace("'", "''") + "'," + str(self.config.STARTING_ELO) + ")"
         if dob is not None:
-            psql_script = "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES ('" + fighter_name.replace("'", "''") + "', 1200, '" + dob + "', '" + dob + "')"
+            psql_script = "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES ('" + fighter_name.replace("'", "''") + "', " + str(self.config.STARTING_ELO) + ", '" + dob + "', '" + dob + "')"
         self.cursor.execute(psql_script)
         self.connection.commit()
     
@@ -13,7 +13,7 @@ class Fighter(PSQLClient):
         fighters = self.cursor.fetchall()
         if len(fighters) == 0:
             self.add_fighter(fighter_name, None)
-            fighters = [[fighter_name, 1200, None, None]]
+            fighters = [[fighter_name, self.config.STARTING_ELO, None, None]]
         return {
             'name': fighters[0][0],
             'elo': fighters[0][1],
