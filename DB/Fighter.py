@@ -37,12 +37,8 @@ class Fighter(PSQLClient):
         return fighter_dicts
     
     def reset_fighters_elo(self):
-        fighters = self.get_fighters()
-        for fighter in fighters:
-            if fighter['dob'] is None:
-                continue
-            self.cursor.execute("UPDATE fighters SET elo=" + str(self.config.STARTING_ELO) + " WHERE fighter_name='" + fighter['name'].replace("'", "''") + "';")
-            self.connection.commit()
+        self.cursor.execute(f"UPDATE fighters SET elo={self.config.STARTING_ELO};")
+        self.connection.commit()
 
     def set_fighter_elo(self, fighter_name, elo):
         self.cursor.execute("UPDATE fighters SET elo=" + str(elo) + " WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")

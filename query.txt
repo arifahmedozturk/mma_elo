@@ -1,15 +1,10 @@
 [
-    ["Kamuela Kirk", "Esteban Ribovics"],
-    ["Shannon Ross", "Jesus Aguilar"],
-    ["Vitor Petrino", "Marcin Parchnio"],
-    ["Jimmy Crute", "Alonzo Menifield"],
-    ["Yazmin Jauregui", "Denise Gomes"],
-    ["Robbie Lawler", "Niko Price"],
-    ["Bo Nickal", "Tresean Gore"],
-    ["Jalin Turner", "Dan Hooker"],
-    ["Robert Whittaker", "Dricus du Plessis"],
-    ["Brandon Moreno", "Alexandre Pantoja"],
-    ["Alexander Volkanovski", "Yair Rodríguez"]
+    ["Tucker Lutz", "Melsik Baghdasaryan"],
+    ["Tyson Nam", "Azat Maksum"],
+    ["Norma Dumont", "Chelsea Chandler"],
+    ["Ottman Azaitar", "Francisco Prado"],
+    ["Walt Harris", "Josh Parisian"],
+    ["Holly Holm", "Mayra Bueno Silva"]
 ]
 
 

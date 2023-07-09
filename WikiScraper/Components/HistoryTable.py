@@ -1,9 +1,11 @@
-from datetime import datetime
+from WikiScraper.Components.BaseTable import BaseTable
+from Helpers.DateHelper import DateHelper
 
-class HistoryTable:
+class HistoryTable(BaseTable):
     def __init__(self, soup):
         self.history_table = self.get_history_table_from_soup(soup)
-    
+        self.date_helper = DateHelper()
+
     def get_history_table_from_soup(self, soup):
         tables = soup.find_all('table', class_='wikitable')
         for table in tables:
@@ -51,26 +53,20 @@ class HistoryTable:
                 results.append(cells[0].text.strip())
         return results
 
+    
+
+
     def get_opponents_from_history_table(self, wiki_scraper):
         opponents = []
         rows = self.history_table.find_all('tr')[1:]
         for row in rows:
-
             cells = row.find_all('td')
             if(len(cells) < 3):
                 opponents.append("Incomplete")
             else:
-                a_tag = cells[2].find('a')
-                if(a_tag is None):
-                    opponents.append(cells[2].text.strip())
-                    continue
-
-                opponent_name = wiki_scraper.get_fighter_name('https://en.wikipedia.org' + a_tag['href'])
-
-                if opponent_name is None:
-                    opponent_name = cells[2].text.strip()
-                
+                opponent_name = self.get_fighter_name_from_cell(cells[2], wiki_scraper)
                 opponents.append(opponent_name)
+
         return opponents
     
     def get_methods_from_history_table(self):
@@ -86,16 +82,10 @@ class HistoryTable:
 
     def get_times_from_history_table(self):
         def extract_date_from_text(text):
-            possible_formats = ["%B %d, %Y", "%b %d, %Y", "%d %B %Y", "%d %b %Y", "%Y"]
-            if "(airdate)" in text:
-                text = text.replace(" (airdate)", "")
-            for possible_format in possible_formats:
-                try:
-                    fight_date = datetime.strptime(text, possible_format)
-                    return fight_date.strftime("%Y-%m-%d")
-                except:
-                    pass
-            return "Incomplete"
+            date = self.date_helper.reformat_date(text)
+            if date is None:
+                return "Incomplete"
+            return date
     
         dates = []
         rows = self.history_table.find_all('tr')[1:]
