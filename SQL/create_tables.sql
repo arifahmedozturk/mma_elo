@@ -13,3 +13,11 @@ CREATE TABLE fights(
     method TEXT,
     event TEXT
 );
+
+CREATE TABLE elo_changes(
+    id SERIAL PRIMARY KEY,
+    fighter TEXT,
+    date TEXT,
+    elo INT,
+    new_elo INT
+);

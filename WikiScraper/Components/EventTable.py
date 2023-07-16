@@ -39,7 +39,7 @@ class EventTable(BaseTable):
         matches = []
         rows = self.event_table.find_all('tr')
         for row in rows:
-            if 'def.' not in row.text:
+            if 'weight' not in row.text:
                 continue
 
             cells = row.find_all('td')

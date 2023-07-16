@@ -1,11 +1,54 @@
 [
-    ["Tucker Lutz", "Melsik Baghdasaryan"],
-    ["Tyson Nam", "Azat Maksum"],
-    ["Norma Dumont", "Chelsea Chandler"],
-    ["Ottman Azaitar", "Francisco Prado"],
-    ["Walt Harris", "Josh Parisian"],
-    ["Holly Holm", "Mayra Bueno Silva"]
+    [
+        "Holly Holm",
+        "Mayra Bueno Silva"
+    ],
+    [
+        "Jack Della Maddalena",
+        "Bassil Hafez"
+    ],
+    [
+        "Ottman Azaitar",
+        "Francisco Prado"
+    ],
+    [
+        "Albert Duraev",
+        "Jun Yong Park"
+    ],
+    [
+        "Norma Dumont",
+        "Chelsea Chandler"
+    ],
+    [
+        "Terrance McKinney",
+        "Nazim Sadykhov"
+    ],
+    [
+        "Tucker Lutz",
+        "Melsik Baghdasaryan"
+    ],
+    [
+        "Viktoriia Dudakova",
+        "Istela Nunes"
+    ],
+    [
+        "Austin Lingo",
+        "Melquizael Costa"
+    ],
+    [
+        "Evan Elder",
+        "Genaro Valdez"
+    ],
+    [
+        "Tyson Nam",
+        "Azat Maksum"
+    ],
+    [
+        "Alexander Munoz",
+        "Carl Deaton III"
+    ],
+    [
+        "Ashlee Evans-Smith",
+        "Ail\u00edn P\u00e9rez"
+    ]
 ]
-
-
-

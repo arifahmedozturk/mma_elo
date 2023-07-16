@@ -1,6 +1,7 @@
 import json
 from ELO.EloHelper import EloHelper
 from ELO.StatsHelper import StatsHelper
+from DB.EloChange import EloChange
 from DB.Fight import Fight
 from DB.Fighter import Fighter
 
@@ -10,6 +11,7 @@ class EloCalculator:
         self.stats_helper = StatsHelper()
         self.FightDB = Fight()
         self.FighterDB = Fighter()
+        self.EloChangeDB = EloChange()
     
     def save_last_date(self, fight_date):
         with open("last_date.txt", "w") as file:
@@ -52,7 +54,12 @@ class EloCalculator:
                 self.stats_helper.log_fight(fighter, opponent, fight)
 
                 fighter_delta_elo, opponent_delta_elo = self.helper.get_elo_changes(fighter, opponent, fight)
+                fighter_new_elo = fighter['elo'] + fighter_delta_elo
+                opponent_new_elo = opponent['elo'] + opponent_delta_elo
 
-                self.FighterDB.set_fighter_elo(fighter['name'], fighter['elo'] + fighter_delta_elo)
-                self.FighterDB.set_fighter_elo(opponent['name'], opponent['elo'] + opponent_delta_elo)
+                self.EloChangeDB.add_elo_change(fighter['name'], opponent['name'], opponent['elo'], fight['date'], fighter['elo'], fighter_new_elo)
+                self.EloChangeDB.add_elo_change(opponent['name'], fighter['name'], fighter['elo'], fight['date'], opponent['elo'], opponent_new_elo) 
+
+                self.FighterDB.set_fighter_elo(fighter['name'], fighter_new_elo)
+                self.FighterDB.set_fighter_elo(opponent['name'], opponent_new_elo)
             self.stats_helper.pretty_print()

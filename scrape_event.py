@@ -1,3 +1,4 @@
+import json
 import sys
 from WikiScraper.WikiScraper import WikiScraper
 from DB import Fight
@@ -13,6 +14,21 @@ FightDB = Fight.Fight()
 
 wiki_scraper = WikiScraper()
 matches = wiki_scraper.get_event_matches(url)
+dump_to_query = False
+query = []
+if "-q" in sys.argv:
+    dump_to_query  = True
+
 for match in matches:
-    FightDB.add_fight(match['fighter'], match['opponent'], match['result'], match['date'], match['method'], match['event'])
+    if dump_to_query:
+        query.append([match['fighter'], match['opponent']])
+    else:
+        FightDB.add_fight(match['fighter'], match['opponent'], match['result'], match['date'], match['method'], match['event'])
+
     print(f"Added fight: {match['fighter']} VS. {match['opponent']} - {match['method']}")
+
+if dump_to_query:
+    with open("query.txt", "w") as file:
+        file.write(json.dumps(query, indent=4))
+        file.close()
+    print("Dumped to query.txt")

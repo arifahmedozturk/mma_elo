@@ -1,4 +1,8 @@
+from DB.EloChange import EloChange
 from DB.Fighter import Fighter
+
+eloChangeDB = EloChange()
+eloChangeDB.reset_table()
 
 fighterDB = Fighter()
 fighterDB.reset_fighters_elo()
