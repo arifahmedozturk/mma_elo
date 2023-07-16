@@ -48,8 +48,8 @@ class EloHelper:
         fighter_elo = fighter['elo'] + fighter_age_penalty
         opponent_elo = opponent['elo'] + opponent_age_penalty
 
-        fighter_transformed_elo = math.pow(10, fighter_elo / self.config.ELO_MULTIPLIER)
-        opponent_transformed_elo = math.pow(10, opponent_elo / self.config.ELO_MULTIPLIER)
+        fighter_transformed_elo = math.pow(10, fighter_elo / self.config.ELO_NORMALIZATION_FACTOR)
+        opponent_transformed_elo = math.pow(10, opponent_elo / self.config.ELO_NORMALIZATION_FACTOR)
 
         fighter_expected_score = fighter_transformed_elo / (fighter_transformed_elo + opponent_transformed_elo)
         opponent_expected_score = opponent_transformed_elo / (fighter_transformed_elo + opponent_transformed_elo)
