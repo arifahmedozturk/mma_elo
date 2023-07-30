@@ -1,52 +1,60 @@
-Holly Holm(1766) VS. Mayra Bueno Silva(1736)
-Probabilities: 0.54 - 0.46
-Odds: 1.84 - 2.19
+Tom Aspinall(1858) VS. Marcin Tybura(1943)
+Probabilities: 0.38 - 0.62
+Odds: 2.63 - 1.61
 
-Jack Della Maddalena(1963) VS. Bassil Hafez(1500)
-Probabilities: 0.93 - 0.07
-Odds: 1.07 - 15.37
+Molly McCann(1622) VS. Julija Stoliarenko(1241)
+Probabilities: 0.9 - 0.1
+Odds: 1.11 - 9.96
 
-Ottman Azaitar(1578) VS. Francisco Prado(1377)
+Nathaniel Wood(1764) VS. Andre Fili(1495)
+Probabilities: 0.82 - 0.18
+Odds: 1.21 - 5.7
+
+Paul Craig(1602) VS. André Muniz(1864)
+Probabilities: 0.18 - 0.82
+Odds: 5.52 - 1.22
+
+Jai Herbert(1449) VS. Farès Ziam(1607)
+Probabilities: 0.29 - 0.71
+Odds: 3.48 - 1.4
+
+Lerone Murphy(1793) VS. Joshua Culibao(1666)
+Probabilities: 0.68 - 0.32
+Odds: 1.48 - 3.08
+
+Davey Grant(1703) VS. Daniel Marcos(1500)
 Probabilities: 0.76 - 0.24
-Odds: 1.31 - 4.18
+Odds: 1.31 - 4.22
 
-Albert Duraev(1530) VS. Jun Yong Park(1758)
-Probabilities: 0.21 - 0.79
-Odds: 4.72 - 1.27
+Danny Roberts(1402) VS. Jonny Parsons(1500)
+Probabilities: 0.36 - 0.64
+Odds: 2.76 - 1.57
 
-Norma Dumont(1755) VS. Chelsea Chandler(1601)
-Probabilities: 0.71 - 0.29
-Odds: 1.41 - 3.43
+Marc Diakiese(1450) VS. Joel Álvarez(1702)
+Probabilities: 0.19 - 0.81
+Odds: 5.27 - 1.23
 
-Terrance McKinney(1409) VS. Nazim Sadykhov(1500)
-Probabilities: 0.37 - 0.63
-Odds: 2.69 - 1.59
+Mick Parkin(1500) VS. Jamal Pogues(1583)
+Probabilities: 0.38 - 0.62
+Odds: 2.61 - 1.62
 
-Tucker Lutz(1409) VS. Melsik Baghdasaryan(1541)
-Probabilities: 0.32 - 0.68
-Odds: 3.14 - 1.47
+Makhmud Muradov(1563) VS. Bryan Barberena(1549)
+Probabilities: 0.52 - 0.48
+Odds: 1.92 - 2.08
 
-Viktoriia Dudakova(1500) VS. Istela Nunes(1216)
-Probabilities: 0.84 - 0.16
-Odds: 1.19 - 6.13
+Ketlen Vieira(1718) VS. Pannie Kianzad(1667)
+Probabilities: 0.57 - 0.43
+Odds: 1.75 - 2.34
 
-Austin Lingo(1542) VS. Melquizael Costa(1477)
-Probabilities: 0.59 - 0.41
-Odds: 1.69 - 2.45
+Chris Duncan(1518) VS. Yanal Ashmouz(1500)
+Probabilities: 0.53 - 0.47
+Odds: 1.9 - 2.11
 
-Evan Elder(1500) VS. Genaro Valdez(1500)
+Shauna Bannon(1500) VS. Bruna Brasil(1500)
 Probabilities: 0.5 - 0.5
 Odds: 2.0 - 2.0
 
-Tyson Nam(1478) VS. Azat Maksum(1500)
-Probabilities: 0.47 - 0.53
-Odds: 2.14 - 1.88
-
-Alexander Munoz(1505) VS. Carl Deaton III(1473)
-Probabilities: 0.55 - 0.45
-Odds: 1.83 - 2.2
-
-Ashlee Evans-Smith(1269) VS. Ailín Pérez(1358)
-Probabilities: 0.37 - 0.63
-Odds: 2.67 - 1.6
+Jafel Filho(1436) VS. Daniel Bárez(1500)
+Probabilities: 0.41 - 0.59
+Odds: 2.45 - 1.69
 

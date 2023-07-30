@@ -18,10 +18,11 @@ while True:
         break
 
     fighter_name = wiki_scraper.get_fighter_name(fighter_url)
+    print(fighter_name)
     if fighter_name is None:
         print("name not found, skipping")
         continue
-    if FighterDB.get_fighter(fighter_name) is not None:
+    if FighterDB.get_fighter(fighter_name, False) is not None:
         print("Found redirect, skipping")
         continue
     fighter_dob = wiki_scraper.get_fighter_dob(fighter_url)

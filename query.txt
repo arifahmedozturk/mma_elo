@@ -1,54 +1,46 @@
 [
     [
-        "Holly Holm",
-        "Mayra Bueno Silva"
+        "Justin Gaethje",
+        "Dustin Poirier"
     ],
     [
-        "Jack Della Maddalena",
-        "Bassil Hafez"
+        "Alex Pereira",
+        "Jan Błachowicz"
     ],
     [
-        "Ottman Azaitar",
-        "Francisco Prado"
+        "Derrick Lewis",
+        "Marcos Rogério de Lima"
     ],
     [
-        "Albert Duraev",
-        "Jun Yong Park"
+        "Bobby Green",
+        "Tony Ferguson"
     ],
     [
-        "Norma Dumont",
-        "Chelsea Chandler"
+        "Kevin Holland",
+        "Michael Chiesa"
     ],
     [
-        "Terrance McKinney",
-        "Nazim Sadykhov"
+        "Gabriel Bonfim",
+        "Trevin Giles"
     ],
     [
-        "Tucker Lutz",
-        "Melsik Baghdasaryan"
+        "C.J. Vergara",
+        "Vinicius Salvador"
     ],
     [
-        "Viktoriia Dudakova",
-        "Istela Nunes"
+        "Roman Kopylov",
+        "Claudio Ribeiro"
     ],
     [
-        "Austin Lingo",
-        "Melquizael Costa"
+        "Jake Matthews",
+        "Darrius Flowers"
     ],
     [
-        "Evan Elder",
-        "Genaro Valdez"
+        "Uroš Medić",
+        "Matthew Semelsberger"
     ],
     [
-        "Tyson Nam",
-        "Azat Maksum"
-    ],
-    [
-        "Alexander Munoz",
-        "Carl Deaton III"
-    ],
-    [
-        "Ashlee Evans-Smith",
-        "Ail\u00edn P\u00e9rez"
+        "Miranda Maverick",
+        "Priscila Cachoeira"
     ]
 ]

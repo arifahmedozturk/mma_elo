@@ -8,12 +8,16 @@ class Fighter(PSQLClient):
         self.cursor.execute(psql_script)
         self.connection.commit()
     
-    def get_fighter(self, fighter_name):
+    def get_fighter(self, fighter_name, add_if_not_present = True):
         self.cursor.execute("SELECT fighter_name, elo, dob, last_age_penalty FROM fighters WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
         fighters = self.cursor.fetchall()
         if len(fighters) == 0:
+            if not add_if_not_present:
+                return None
+            
             self.add_fighter(fighter_name, None)
             fighters = [[fighter_name, self.config.STARTING_ELO, None, None]]
+
         return {
             'name': fighters[0][0],
             'elo': fighters[0][1],
@@ -53,5 +57,8 @@ class Fighter(PSQLClient):
             self.connection.commit()
 
     def set_fighter_last_age_penalty(self, fighter_name, last_age_penalty):
+        if last_age_penalty is None:
+            return
+        
         self.cursor.execute("UPDATE fighters SET last_age_penalty='" + last_age_penalty + "' WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
         self.connection.commit() 

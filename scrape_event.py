@@ -18,7 +18,7 @@ dump_to_query = False
 query = []
 if "-q" in sys.argv:
     dump_to_query  = True
-
+print("queyr dumop", dump_to_query)
 for match in matches:
     if dump_to_query:
         query.append([match['fighter'], match['opponent']])
@@ -28,7 +28,7 @@ for match in matches:
     print(f"Added fight: {match['fighter']} VS. {match['opponent']} - {match['method']}")
 
 if dump_to_query:
-    with open("query.txt", "w") as file:
-        file.write(json.dumps(query, indent=4))
+    with open("query.txt", "w", encoding="utf-8") as file:
+        file.write(json.dumps(query, indent=4, ensure_ascii=False))
         file.close()
     print("Dumped to query.txt")

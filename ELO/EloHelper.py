@@ -22,6 +22,9 @@ class EloHelper:
         return 0, 1
 
     def get_age_penalty_and_new_date(self, last_age_penalty_date, fight_date):
+        if last_age_penalty_date is None:
+            return 0, None
+        
         age_penalty = 0
         penalty_date = last_age_penalty_date
         while fight_date >= penalty_date:
