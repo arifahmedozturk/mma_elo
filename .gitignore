@@ -1,9 +1,11 @@
 /data/
 /last_date.txt
+/query.txt
 /query_answer.txt
 /stats.txt
-/stats\ copy.txt
 __pycache__/
 *.pyc
 .DS_Store
 .env
+SQL/fighters.sql
+SQL/fights.sql

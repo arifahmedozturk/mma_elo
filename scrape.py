@@ -1,47 +1,86 @@
+import concurrent.futures
+from threading import Lock
 from WikiScraper.WikiScraper import WikiScraper
-from FighterQueue.FighterQueue import FighterQueue
 from DB import Fight, Fighter
 
-FighterDB = Fighter.Fighter()
-FightDB = Fight.Fight()
+NUM_WORKERS = 10
+UFC_FILTERS = ["UFC", "The Ultimate Fighter"]
 
-fighter_queue = FighterQueue()
-fighter_queue.insert('https://en.wikipedia.org/wiki/Syuri')
-fighter_queue.insert('https://en.wikipedia.org/wiki/Jon_Jones')
+insert_lock = Lock()
 
-wiki_scraper = WikiScraper()
 
-while True:
-    fighter_url = fighter_queue.pop()
-    print("Started at url", fighter_url)
-    if fighter_url is None:
-        break
+def process_fighter(fighter_url):
+    """
+    Scrape one fighter page. Returns a list of opponent URLs to enqueue.
+    Each call gets its own DB connections and WikiScraper (not thread-safe to share).
+    """
+    wiki_scraper = WikiScraper()
+    FighterDB = Fighter.Fighter()
+    FightDB = Fight.Fight()
 
     fighter_name = wiki_scraper.get_fighter_name(fighter_url)
-    print(fighter_name)
     if fighter_name is None:
-        print("name not found, skipping")
-        continue
+        print(f"[skip] name not found: {fighter_url}")
+        return []
+
+    # Fast check before acquiring the lock
     if FighterDB.get_fighter(fighter_name, False) is not None:
-        print("Found redirect, skipping")
-        continue
+        print(f"[skip] already exists: {fighter_name}")
+        return []
+
     fighter_dob = wiki_scraper.get_fighter_dob(fighter_url)
     matches = wiki_scraper.get_matches(fighter_url)
     opponent_urls = wiki_scraper.get_opponent_urls(fighter_url)
-    for match in matches:
-        ufc_texts = ["UFC", "The Ultimate Fighter"]
-        ufc_match = False
-        for ufc_text in ufc_texts:
-            if ufc_text in match['event']:
-                ufc_match = True
-                break
-        if ufc_match:
-            opponent_url = opponent_urls.get(match['opponent'])
-            if(opponent_url is None):
-                continue
-            fighter_queue.insert(opponent_url)
-    
-    FighterDB.add_fighter(fighter_name, fighter_dob)
-    for match in matches:
-        FightDB.add_fight(fighter_name, match['opponent'], match['result'], match['date'], match['method'], match['event'])
-    print("Finished adding", fighter_name, "; added", str(len(matches)), "fights")
+
+    new_urls = [
+        opponent_urls[match['opponent']]
+        for match in matches
+        if any(t in match['event'] for t in UFC_FILTERS)
+        and match['opponent'] in opponent_urls
+    ]
+
+    with insert_lock:
+        # Double-check inside the lock to guard against races
+        if FighterDB.get_fighter(fighter_name, False) is not None:
+            return new_urls
+        FighterDB.add_fighter(fighter_name, fighter_dob)
+        for match in matches:
+            FightDB.add_fight(
+                fighter_name, match['opponent'], match['result'],
+                match['date'], match['method'], match['event']
+            )
+
+    print(f"[done] {fighter_name} — {len(matches)} fights")
+    return new_urls
+
+
+def main():
+    seeds = [
+        'https://en.wikipedia.org/wiki/Syuri',
+        'https://en.wikipedia.org/wiki/Jon_Jones',
+    ]
+
+    visited = set(seeds)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
+        # Submit seed fighters
+        pending = {executor.submit(process_fighter, url): url for url in seeds}
+
+        while pending:
+            done, _ = concurrent.futures.wait(
+                pending, return_when=concurrent.futures.FIRST_COMPLETED
+            )
+            for future in done:
+                del pending[future]
+                try:
+                    for url in future.result():
+                        if url not in visited:
+                            visited.add(url)
+                            f = executor.submit(process_fighter, url)
+                            pending[f] = url
+                except Exception as e:
+                    print(f"[error] {e}")
+
+
+if __name__ == '__main__':
+    main()

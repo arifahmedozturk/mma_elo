@@ -6,10 +6,11 @@ CREATE TABLE fighters(
 );
 
 CREATE TABLE fights(
-    id SERIAL PRIMARY KEY
+    id SERIAL PRIMARY KEY,
     fighter TEXT,
     opponent TEXT,
     result TEXT,
+    date TEXT,
     method TEXT,
     event TEXT
 );
@@ -17,6 +18,8 @@ CREATE TABLE fights(
 CREATE TABLE elo_changes(
     id SERIAL PRIMARY KEY,
     fighter TEXT,
+    opponent TEXT,
+    opponent_elo INT,
     date TEXT,
     elo INT,
     new_elo INT

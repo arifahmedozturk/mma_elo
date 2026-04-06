@@ -1,11 +1,13 @@
 import json
 import math
 from DB.Fighter import Fighter
+from Config.Config import Config
 
 class Querier:
     def __init__(self):
         self.matches = self.read_query()
         self.FighterDB = Fighter()
+        self.config = Config()
     
     def read_query(self):
         with open("query.txt", "r", encoding="utf-8") as f:
@@ -23,8 +25,8 @@ class Querier:
     def pretty_print_fight(self, fighter, opponent):
         print_text = f"{fighter['name']}({fighter['elo']}) VS. {opponent['name']}({opponent['elo']})" + "\n"
         
-        fighter_win_probability = 1 / (1 + math.pow(10, (opponent['elo'] - fighter['elo'])/400))
-        opponent_win_probability = 1 / (1 + math.pow(10, (fighter['elo'] - opponent['elo'])/400))
+        fighter_win_probability = 1 / (1 + math.pow(10, (opponent['elo'] - fighter['elo']) / self.config.ELO_NORMALIZATION_FACTOR))
+        opponent_win_probability = 1 / (1 + math.pow(10, (fighter['elo'] - opponent['elo']) / self.config.ELO_NORMALIZATION_FACTOR))
         print_text += f"Probabilities: {round(fighter_win_probability, 2)} - {round(opponent_win_probability, 2)}" + "\n"
  
         fighter_odd = 1 / fighter_win_probability

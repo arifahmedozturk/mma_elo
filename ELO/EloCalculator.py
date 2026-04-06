@@ -32,7 +32,7 @@ class EloCalculator:
         return unique_matches
     
     def start_elo_computation(self):
-        for x in range(10000):
+        while True:
             last_date = self.load_last_date()
             closest_date = self.FightDB.get_closest_date_to_date(last_date)
             if closest_date is None or closest_date == "Incomplete":

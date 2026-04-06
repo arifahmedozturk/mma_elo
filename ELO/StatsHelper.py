@@ -26,4 +26,3 @@ class StatsHelper:
             if self.total_predictions > 0:
                 pretty_text += "RATIO: " + str(self.correct_predictions / self.total_predictions) + "\n"
             f.write(pretty_text)
-            f.close()

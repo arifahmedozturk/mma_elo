@@ -12,11 +12,10 @@ class PSQLClient:
     def setup_connection(self):
         connection = psycopg2.connect(
             host=os.getenv('DB_HOST', 'localhost'),
-            port=os.getenv('DB_PORT', '5432'),
+            port=os.getenv('DB_PORT', '5433'),
             user=os.getenv('DB_USER', 'myuser'),
             password=os.getenv('DB_PASSWORD', 'mypassword'),
             database=os.getenv('DB_NAME', 'mydatabase')
         )
-
         cursor = connection.cursor()
         return connection, cursor

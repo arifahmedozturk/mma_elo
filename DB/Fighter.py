@@ -2,19 +2,28 @@ from DB.PSQLClient import PSQLClient
 
 class Fighter(PSQLClient):
     def add_fighter(self, fighter_name, dob):
-        psql_script = "INSERT INTO fighters(fighter_name, elo) VALUES ('" + fighter_name.replace("'", "''") + "'," + str(self.config.STARTING_ELO) + ")"
         if dob is not None:
-            psql_script = "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES ('" + fighter_name.replace("'", "''") + "', " + str(self.config.STARTING_ELO) + ", '" + dob + "', '" + self.date_helper.add_years_to_date(dob, self.config.MIN_AGE_FOR_PENALTY) + "')"
-        self.cursor.execute(psql_script)
+            self.cursor.execute(
+                "INSERT INTO fighters(fighter_name, elo, dob, last_age_penalty) VALUES (%s, %s, %s, %s)",
+                (fighter_name, self.config.STARTING_ELO, dob, self.date_helper.add_years_to_date(dob, self.config.MIN_AGE_FOR_PENALTY))
+            )
+        else:
+            self.cursor.execute(
+                "INSERT INTO fighters(fighter_name, elo) VALUES (%s, %s)",
+                (fighter_name, self.config.STARTING_ELO)
+            )
         self.connection.commit()
-    
-    def get_fighter(self, fighter_name, add_if_not_present = True):
-        self.cursor.execute("SELECT fighter_name, elo, dob, last_age_penalty FROM fighters WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
+
+    def get_fighter(self, fighter_name, add_if_not_present=True):
+        self.cursor.execute(
+            "SELECT fighter_name, elo, dob, last_age_penalty FROM fighters WHERE fighter_name=%s",
+            (fighter_name,)
+        )
         fighters = self.cursor.fetchall()
         if len(fighters) == 0:
             if not add_if_not_present:
                 return None
-            
+
             self.add_fighter(fighter_name, None)
             fighters = [[fighter_name, self.config.STARTING_ELO, None, None]]
 
@@ -26,39 +35,45 @@ class Fighter(PSQLClient):
         }
 
     def get_fighters(self):
-        fighter_dicts = []
         self.cursor.execute("SELECT fighter_name, elo, dob, last_age_penalty FROM fighters;")
         fighters = self.cursor.fetchall()
-        for i in range(len(fighters)):
-            if(len(fighters[i]) < 4):
-                print(fighters[i])
-            fighter_dicts.append({
-                'name': fighters[i][0],
-                'elo': fighters[i][1],
-                'dob': fighters[i][2],
-                'last_age_penalty': fighters[i][3]
-            })
-        return fighter_dicts
-    
+        return [
+            {
+                'name': f[0],
+                'elo': f[1],
+                'dob': f[2],
+                'last_age_penalty': f[3]
+            }
+            for f in fighters
+        ]
+
     def reset_fighters_elo(self):
-        self.cursor.execute(f"UPDATE fighters SET elo={self.config.STARTING_ELO};")
+        self.cursor.execute("UPDATE fighters SET elo=%s", (self.config.STARTING_ELO,))
         self.connection.commit()
 
     def set_fighter_elo(self, fighter_name, elo):
-        self.cursor.execute("UPDATE fighters SET elo=" + str(elo) + " WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
-        self.connection.commit() 
-    
+        self.cursor.execute(
+            "UPDATE fighters SET elo=%s WHERE fighter_name=%s",
+            (elo, fighter_name)
+        )
+        self.connection.commit()
+
     def reset_fighters_last_age_penalty(self):
         fighters = self.get_fighters()
         for fighter in fighters:
             if fighter['dob'] is None:
                 continue
-            self.cursor.execute("UPDATE fighters SET last_age_penalty='" + self.date_helper.add_years_to_date(fighter['dob'], self.config.MIN_AGE_FOR_PENALTY) + "' WHERE fighter_name='" + fighter['name'].replace("'", "''") + "';")
+            self.cursor.execute(
+                "UPDATE fighters SET last_age_penalty=%s WHERE fighter_name=%s",
+                (self.date_helper.add_years_to_date(fighter['dob'], self.config.MIN_AGE_FOR_PENALTY), fighter['name'])
+            )
             self.connection.commit()
 
     def set_fighter_last_age_penalty(self, fighter_name, last_age_penalty):
         if last_age_penalty is None:
             return
-        
-        self.cursor.execute("UPDATE fighters SET last_age_penalty='" + last_age_penalty + "' WHERE fighter_name='" + fighter_name.replace("'", "''") + "';")
-        self.connection.commit() 
+        self.cursor.execute(
+            "UPDATE fighters SET last_age_penalty=%s WHERE fighter_name=%s",
+            (last_age_penalty, fighter_name)
+        )
+        self.connection.commit()
