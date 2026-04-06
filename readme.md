@@ -1,4 +1,25 @@
-#  MMA ELO 
+# MMA ELO Rating System
+
+An Elo rating system for MMA fighters built on Wikipedia fight data. This project scrapes fighter information and match history from Wikipedia, calculates dynamic Elo ratings adjusting for fighter age and KOs, and provides fighter comparison predictions.
+
+## Prerequisites
+
+- Docker and Docker Compose
+- Python 3.7+
+- PostgreSQL (via Docker)
+
+## Installation
+
+1. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Configure environment variables (optional - defaults provided):
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials if needed
+   ```
 
 ## Setting Up
 
@@ -18,6 +39,25 @@
 
 - To generate setup files for the SQL database, run `python generate_dump_sql.py`.
 - To rescrape the data, ensure that you truncate the tables and then run `python scrape.py`.
+
+## Project Structure
+
+- **Config/** - Configuration constants (ELO multipliers, penalties, etc.)
+- **DB/** - Database layer (PostgreSQL client, models for Fighters/Fights/EloChanges)
+- **ELO/** - Elo calculation logic (EloCalculator, EloHelper, StatsHelper)
+- **WikiScraper/** - Web scraping components for Wikipedia fighter data
+- **FighterQueue/** - Queue for managing fighter URLs during scraping
+- **Helpers/** - Utility modules (date handling)
+- **Querier/** - Query processing for fighter comparisons
+- **SQL/** - Database schema and initialization scripts
+
+## How It Works
+
+1. **Scraping**: `scrape.py` extracts fighter data and fight records from Wikipedia
+2. **ELO Calculation**: `compute_elos.py` processes fights chronologically and updates ratings
+   - Adjusts for fighter age and KO outcomes
+   - Starting rating: 1500
+3. **Predictions**: `query.py` provides win probability for fighter matchups
 
 ## Troubleshooting
 

@@ -1,4 +1,5 @@
 import psycopg2
+import os
 from Config.Config import Config
 from Helpers.DateHelper import DateHelper
 
@@ -10,11 +11,11 @@ class PSQLClient:
 
     def setup_connection(self):
         connection = psycopg2.connect(
-            host='localhost',
-            port='5432', 
-            user='myuser', 
-            password='mypassword',
-            database='mydatabase'
+            host=os.getenv('DB_HOST', 'localhost'),
+            port=os.getenv('DB_PORT', '5432'),
+            user=os.getenv('DB_USER', 'myuser'),
+            password=os.getenv('DB_PASSWORD', 'mypassword'),
+            database=os.getenv('DB_NAME', 'mydatabase')
         )
 
         cursor = connection.cursor()

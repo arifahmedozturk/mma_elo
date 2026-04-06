@@ -2,3 +2,8 @@
 /last_date.txt
 /query_answer.txt
 /stats.txt
+/stats\ copy.txt
+__pycache__/
+*.pyc
+.DS_Store
+.env
