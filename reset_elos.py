@@ -1,12 +1,18 @@
 from DB.EloChange import EloChange
 from DB.Fighter import Fighter
 
-eloChangeDB = EloChange()
-eloChangeDB.reset_table()
 
-fighterDB = Fighter()
-fighterDB.reset_fighters_elo()
-fighterDB.reset_fighters_last_age_penalty()
+def reset_elos():
+    eloChangeDB = EloChange()
+    eloChangeDB.reset_table()
 
-with open("last_date.txt", "w") as f:
-    f.write('"1940-01-01"')
+    fighterDB = Fighter()
+    fighterDB.reset_fighters_elo()
+    fighterDB.reset_fighters_last_age_penalty()
+
+    with open("last_date.txt", "w") as f:
+        f.write('"1940-01-01"')
+
+
+if __name__ == "__main__":
+    reset_elos()

@@ -45,3 +45,38 @@ class TestRemoveDuplicateMatches:
     def test_single_fight_unchanged(self, calculator):
         fights = [make_fight("Jon Jones", "Stipe Miocic")]
         assert calculator.remove_duplicate_matches(fights) == fights
+
+
+class TestComputeAccuracy:
+    def test_correct_when_higher_elo_fighter_wins(self, calculator):
+        fighter = {'elo': 1600}
+        opponent = {'elo': 1400}
+        fight = {'result': 'Win'}
+
+        result = calculator.compute_accuracy(fighter, opponent, fight)
+
+        assert result is True
+        assert calculator.stats_helper.correct_predictions == 1
+        assert calculator.stats_helper.total_predictions == 1
+
+    def test_incorrect_when_higher_elo_fighter_loses(self, calculator):
+        fighter = {'elo': 1600}
+        opponent = {'elo': 1400}
+        fight = {'result': 'Loss'}
+
+        result = calculator.compute_accuracy(fighter, opponent, fight)
+
+        assert result is False
+        assert calculator.stats_helper.correct_predictions == 0
+        assert calculator.stats_helper.total_predictions == 1
+
+    def test_ignores_non_win_loss_results(self, calculator):
+        fighter = {'elo': 1600}
+        opponent = {'elo': 1400}
+        fight = {'result': 'Draw'}
+
+        result = calculator.compute_accuracy(fighter, opponent, fight)
+
+        assert result is None
+        assert calculator.stats_helper.correct_predictions == 0
+        assert calculator.stats_helper.total_predictions == 0

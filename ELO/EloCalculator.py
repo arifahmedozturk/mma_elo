@@ -30,6 +30,22 @@ class EloCalculator:
                 existing_matches[match['opponent'] + "+" + match['fighter']] = False
                 unique_matches.append(match)
         return unique_matches
+
+    def compute_accuracy(self, fighter, opponent, fight):
+        # Only score predictions when the fight has a clear winner/loser result.
+        if fight['result'] not in ('Win', 'Loss'):
+            return None
+
+        predicted_fighter_wins = fighter['elo'] >= opponent['elo']
+        actual_fighter_wins = fight['result'] == 'Win'
+        is_correct_prediction = predicted_fighter_wins == actual_fighter_wins
+
+        if is_correct_prediction:
+            self.stats_helper.log_positive_answer()
+        else:
+            self.stats_helper.log_negative_answer()
+
+        return is_correct_prediction
     
     def start_elo_computation(self):
         while True:
@@ -51,7 +67,7 @@ class EloCalculator:
                 fighter = self.FighterDB.get_fighter(fight['fighter'])
                 opponent = self.FighterDB.get_fighter(fight['opponent'])
 
-                self.stats_helper.log_fight(fighter, opponent, fight)
+                self.compute_accuracy(fighter, opponent, fight)
 
                 fighter_delta_elo, opponent_delta_elo = self.helper.get_elo_changes(fighter, opponent, fight)
                 fighter_new_elo = fighter['elo'] + fighter_delta_elo

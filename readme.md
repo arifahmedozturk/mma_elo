@@ -130,6 +130,24 @@ python query.py
 
 Results (win probabilities and odds) are written to `query_answer.txt`.
 
+## Accuracy
+
+To measure how well the Elo model predicts fight outcomes, run:
+
+```bash
+python compute_accuracy.py
+```
+
+This resets all ratings, replays every fight in chronological order, and counts how often the higher-rated fighter won. Latest results:
+
+| Metric | Value |
+|--------|-------|
+| Correct predictions | 4923 |
+| Total predictions | 8199 |
+| Accuracy | 60.0% |
+
+A prediction is counted as correct when the fighter with the higher Elo rating before the fight is the one who wins. Draws, no-contests, and split decisions still count toward `total_predictions`.
+
 ## Other Commands
 
 - `python generate_dump_sql.py` — exports the current database to `SQL/fighters.sql` and `SQL/fights.sql`
